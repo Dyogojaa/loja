@@ -1,7 +1,7 @@
 from collections.abc import Iterable
 from django.db import models
 from utils import imagens
-
+from django.utils.text import slugify
 # Create your models here.
 
 
@@ -10,20 +10,33 @@ class Produto(models.Model):
     descricao = models.TextField(max_length=255)
     descricao_longa = models.TextField()
     imagem = models.ImageField(upload_to='produto_imagens/%Y/%m', blank=True, null=True)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
     preco_marketing = models.FloatField()
     preco_marketing_promocional = models.FloatField(default=0)
     tipo= models.CharField(
         default ='V',
         max_length=1,
         choices = (
-            ('V', 'Variação'),
+            ('V', 'Variavel'),
             ('S', 'Simples')
         )
     )
     
+    def get_preco_formatado(self):
+        return f'R$ {self.preco_marketing:.2f}'.replace('.',',')
+    get_preco_formatado.short_description ='Preço'
+    
+    def get_preco_promo(self):
+        return f'R$ {self.preco_marketing_promocional:.2f}'.replace('.',',')
+    get_preco_promo.short_description ='Preço Promo'
     
     def save(self, *args, **kwargs):
+        
+        if not self.slug:
+            slug =  f'{slugify(self.nome)}'
+            self.slug = slug
+
+        
         super().save(*args, **kwargs)
     
         max_image_size = 800
