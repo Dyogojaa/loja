@@ -1,6 +1,6 @@
 from collections.abc import Iterable
 from django.db import models
-from utils import imagens
+from utils import imagens, utils
 from django.utils.text import slugify
 # Create your models here.
 
@@ -22,12 +22,12 @@ class Produto(models.Model):
         )
     )
     
-    def get_preco_formatado(self):
-        return f'R$ {self.preco_marketing:.2f}'.replace('.',',')
+    def get_preco_formatado(self):        
+        return utils.formata_preco(self.preco_marketing)    
     get_preco_formatado.short_description ='Preço'
     
     def get_preco_promo(self):
-        return f'R$ {self.preco_marketing_promocional:.2f}'.replace('.',',')
+        return utils.formata_preco(self.preco_marketing_promocional)    
     get_preco_promo.short_description ='Preço Promo'
     
     def save(self, *args, **kwargs):
