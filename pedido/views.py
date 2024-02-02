@@ -9,7 +9,7 @@ class Pagar(View):
     def get(self, *args, **kwargs):
         return HttpResponse("Pagar Pedido")
 
-class FecharPedido(View):
+class SalvarPedido(View):
     def get(self, *args, **kwargs):
         return HttpResponse("Fechar Pedido")
     

@@ -37,7 +37,7 @@
 
 
                     
-                    <form action="#" method="POST" id="form-add-to-cart">
+                    <form action="{% url "produto:adicionarcarrinho" %}" method="GET" id="form-add-to-cart">
                         <div class="form-group">
                           <select id="select-variacoes" name="vid" class="form-control form-control-lg" title="Escolha uma variação">
                             {% for variacao in produto.variacao_set.all %}
