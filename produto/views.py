@@ -1,11 +1,13 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views import View
+from django.http import HttpResponse
 from django.contrib import messages
-from . import models    
-from pprint import pprint
+from django.db.models import Q
+
+from . import models
+from perfil.models import Perfil
 
 # Create your views here.
 class ListaProdutos(ListView):
@@ -155,7 +157,7 @@ class Finalizar(View):
         if not self.request.user.is_authenticated:
             return redirect('perfil:criar')
 
-        perfil = models.Perfil.objects.filter(usuario=self.request.user).exists()
+        perfil =  Perfil.objects.filter(usuario=self.request.user).exists()
 
         if not perfil:
             messages.error(
